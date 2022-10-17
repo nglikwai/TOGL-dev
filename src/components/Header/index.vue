@@ -1,5 +1,5 @@
 <script>
-import { headerLinks } from "~/src/data";
+import { headerLinks } from "@/src/data";
 import MobileHeader from "./MobileHeader";
 import { mapActions } from "vuex";
 import { FontSizeWrapper } from "./styledComponents";
