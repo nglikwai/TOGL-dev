@@ -1,6 +1,6 @@
 <script>
-import RegisterForm from "@/src/components/RegisterForm";
-import Header from "@/src/components/Header";
+import RegisterForm from "../../src/components/RegisterForm";
+import Header from "../../src/components/Header";
 export default {
   name: "App",
   data() {
