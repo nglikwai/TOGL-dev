@@ -1,20 +1,50 @@
 <script>
-import { registerQuestions } from "../data";
-import Checkbox from "./CheckBox.vue";
-import Footer from "./Footer.vue";
-import Tag from "./Tag.vue";
-import SelectMenu from "./Common/SelectMenu";
-import DatePicker from "./Common/DatePicker";
-
+import { registerQuestions } from "../../data";
+import Checkbox from "../CheckBox.vue";
+import Footer from "../Footer.vue";
+import Tag from "../Tag.vue";
+import DatePicker from "../Common/DatePicker";
+import Input from "../Common/Input";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import {
+  Title,
+  Warning,
+  sessionTitle,
+  UploadButton,
+  QuestionTitle,
+  QuestionInstruction,
+  QuestionDescription,
+  ApplyButton,
+  BackButton,
+} from "./styledComponents";
 export default {
+  computed: mapState(["pageScale"]),
+
   data() {
     return {
       registerQuestions,
+      answer: {},
       tags: [],
     };
   },
-  components: { Checkbox, Footer, Tag, SelectMenu, DatePicker },
+  components: {
+    Checkbox,
+    Footer,
+    Tag,
+    DatePicker,
+    Input,
+    Title,
+    Warning,
+    sessionTitle,
+    UploadButton,
+    QuestionTitle,
+    QuestionInstruction,
+    QuestionDescription,
+    ApplyButton,
+    BackButton,
+  },
   methods: {
+    ...mapActions(["changePageScale"]),
     onSubmit() {
       // this.$emit("loginAction", this.username);
     },
@@ -31,39 +61,47 @@ export default {
     onDeleteTag(tag) {
       this.tags = this.tags.filter((item) => item !== tag);
     },
+    onApply() {
+      console.log(this.answer);
+    },
   },
 };
 </script>
 
 <template>
   <div class="outer-wrapper">
-    <div class="heading"></div>
+    <div class="heading" style="z-index: 10; padding: 20px"></div>
+    <div class="heading" style="border-radius: 0 0 25px 25px"></div>
     <div class="lower-wrapper">
       <div class="form-wrapper">
         <div class="form-inner-wrapper">
-          <div class="title">Create Your Account</div>
+          <Title :scale="pageScale">Create Your Account</Title>
           <div class="session">
-            <div class="warning">
+            <Warning :scale="pageScale">
               *Fields are required if not otherwise stated.
-            </div>
+            </Warning>
+            <button></button>
             <div
               v-for="session in registerQuestions"
               :key="session.sessionTitle"
               class="questions-wrapper"
             >
-              <div class="session-title">{{ session.sessionTitle }}</div>
+              <sessionTitle :scale="pageScale">{{
+                session.sessionTitle
+              }}</sessionTitle>
               <div
                 class="question"
                 :style="question.line === 0.5 && 'width:auto;'"
                 v-for="question in session.questions"
                 :key="question.title"
               >
-                <div class="question-title">{{ question.title }}</div>
-
-                <div v-if="question.type === 'file'">
-                  <button class="upload-button">
+                <QuestionTitle :scale="pageScale">{{
+                  question.title
+                }}</QuestionTitle>
+                <div v-if="question.element === 'file'">
+                  <UploadButton :scale="pageScale">
                     {{ question.label }}
-                    <img :src="require('../../assets/icon/upload.svg')" />
+                    <img :src="require('../../../assets/icon/upload.svg')" />
                     <input
                       type="file"
                       id="file"
@@ -71,7 +109,7 @@ export default {
                       multiple
                       @change="uploadFile"
                     />
-                  </button>
+                  </UploadButton>
                   <div class="tag-wrapper">
                     <div v-for="tag in tags" :key="tag">
                       <Tag :tag="tag" @deleteTag="onDeleteTag" />
@@ -80,37 +118,39 @@ export default {
                 </div>
 
                 <div v-if="question.description">
-                  <div
-                    class="question-description"
+                  <QuestionDescription
+                    :scale="pageScale"
                     v-for="item in question.description"
                     :key="item"
                   >
-                    <Checkbox v-if="question.type === 'checkbox'" />{{ item }}
-                  </div>
+                    <Checkbox v-if="question.element === 'checkbox'" />{{
+                      item
+                    }}
+                  </QuestionDescription>
                 </div>
 
-                <div v-if="question.instruction" class="question-instruction">
+                <QuestionInstruction
+                  :scale="pageScale"
+                  v-if="question.instruction"
+                >
                   {{ question.instruction }}
-                </div>
+                </QuestionInstruction>
 
-                <input
-                  v-if="question.type === 'input'"
-                  type="text"
-                  :style="question.line === 2 && `width:100%; max-width:1200px`"
+                <Input
+                  :data="answer[question.code]"
+                  @input="(e) => (answer[question.code] = e)"
+                  :question="question"
                 />
-                <input
-                  v-if="question.line === 2"
-                  type="text"
-                  style="width: 100%; max-width: 1200px"
-                />
-                <DatePicker v-if="question.type === 'date'" />
-                <SelectMenu v-if="question.type === 'select'" />
               </div>
             </div>
           </div>
           <div class="action-button">
-            <button id="back" @click="redirect('/')">Back</button>
-            <button id="apply" @click="redirect('/')">Apply</button>
+            <BackButton :scale="pageScale" @click="redirect('/')"
+              >Back</BackButton
+            >
+            <ApplyButton :scale="pageScale" @click="onApply()"
+              >Apply</ApplyButton
+            >
           </div>
         </div>
       </div>
@@ -120,7 +160,7 @@ export default {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .outer-wrapper {
   width: 100%;
   display: flex;
@@ -132,17 +172,20 @@ export default {
 .heading {
   background: white;
   border-radius: 25px 25px 0px 0px;
-  padding: 20px;
+  padding: 100px;
   width: 100%;
   max-width: 1420px;
 }
 
 .lower-wrapper {
   width: 100%;
+  margin-top: 20px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: absolute;
+  height: calc(100vh - 139px);
 }
 
 .form-wrapper {
@@ -152,7 +195,7 @@ export default {
 }
 
 .form-inner-wrapper {
-  padding: 0 20px;
+  padding: 20px 20px 0 20px;
   background: white;
   height: 100%;
   width: 100%;
@@ -160,23 +203,7 @@ export default {
   flex-direction: column;
   align-items: center;
   padding-bottom: 100px;
-  border-radius: 0 0 25px 25px;
-}
-
-.title {
-  background: #2ca2b9;
-  color: white;
-  font-size: 40px;
-  padding: 4px;
-  width: 100%;
-  text-align: center;
-  border-radius: 10px;
-  margin: 10px 0;
-}
-
-.warning {
-  color: #3b5974;
-  font-size: 16px;
+  border-radius: 25px;
 }
 
 .session {
@@ -190,30 +217,6 @@ export default {
   flex-wrap: wrap;
   width: 100%;
   box-sizing: border-box;
-}
-.session-title {
-  font-size: 24px;
-  color: #2079a9;
-  font-family: Hind Madurai Bold;
-  width: 100%;
-}
-
-.session input[type="text"] {
-  background: #ecf6fb;
-  border: #3d9dd1 solid 1px;
-  padding: 4px 10px;
-  margin: 0 10px;
-  border-radius: 8px;
-  height: 45px;
-  width: 100%;
-  max-width: 550px;
-  color: #00325c;
-  font-size: 20px;
-  margin-bottom: 12px;
-}
-
-.session input[type="text"]:focus {
-  border: #2a79a9 solid 1px;
 }
 
 .question {
@@ -231,75 +234,12 @@ export default {
   flex-wrap: wrap;
 }
 
-.upload-button {
-  background: #2a79a9;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  margin: 0 10px;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 400px;
-  font-size: 24px;
-  font-family: Hind Madurai Light;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-
 .question button input[type="file"] {
   position: absolute;
   max-width: 400px;
   opacity: 0;
   cursor: pointer;
   width: 95%;
-}
-
-.question-title {
-  width: auto;
-  color: #2079a9;
-  font-size: 24px;
-  padding: 2px 0;
-  font-family: Hind Madurai Medium;
-}
-
-.question-description {
-  font-size: 20px;
-  color: #00325c;
-  padding: 4px 10px;
-  display: flex;
-  line-height: 30px;
-}
-
-.question-instruction {
-  font-size: 16px;
-  color: #00325c;
-  padding: 4px 10px;
-}
-
-#apply {
-  background: #2ca2b9;
-  color: white;
-  border: none;
-  padding: 4px 30px;
-  display: flex;
-  justify-content: center;
-  margin: 0 10px;
-  border-radius: 3rem;
-  font-size: 24px;
-}
-
-#back {
-  background: white;
-  color: #2ca2b9;
-  border: 3px solid #2ca2b9;
-  padding: 4px 30px;
-  display: flex;
-  justify-content: center;
-  margin: 0 10px;
-  border-radius: 3rem;
-  font-size: 24px;
 }
 
 .action-button {

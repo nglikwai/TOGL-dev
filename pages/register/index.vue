@@ -1,5 +1,5 @@
 <script>
-import RegisterForm from "../../src/components/RegisterForm.vue";
+import RegisterForm from "../../src/components/RegisterForm";
 import Header from "../../src/components/Header";
 export default {
   name: "App",
@@ -53,7 +53,7 @@ export default {
   width: 0px;
 }
 </style>
-<style scoped>
+<style lang="scss" scoped>
 .wrapper {
   font-family: Hind Madurai Regular;
   background: #d8ecf4;

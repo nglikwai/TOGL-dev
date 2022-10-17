@@ -1,13 +1,12 @@
 <template>
-<label class="checkbox-container">
-  <input  type="checkbox">
-  <span class="checkmark"></span>
-</label>
+  <label class="checkbox-container">
+    <input type="checkbox" />
+    <span class="checkmark"></span>
+  </label>
 </template>
 
 <script>
-    export default {
-    }
+export default {};
 </script>
 
 <style scoped>
@@ -47,7 +46,6 @@
 
 /* On mouse-over, add a grey background color */
 
-
 /* When the checkbox is checked, add a blue background */
 .checkbox-container input:checked ~ .checkmark {
   background-color: white;
@@ -67,8 +65,8 @@
 
 /* Style the checkmark/indicator */
 .checkbox-container .checkmark:after {
-  top:3px;
-  left:3px;
+  top: 3px;
+  left: 3px;
   width: 18px;
   height: 18px;
   background: #2079a9;

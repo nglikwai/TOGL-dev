@@ -1,6 +1,8 @@
 <script>
 import { headerLinks } from "../../data";
 import MobileHeader from "./MobileHeader";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { FontSizeWrapper } from "./styledComponents";
 export default {
   data() {
     return {
@@ -9,8 +11,12 @@ export default {
       isMobileMenuShown: false,
     };
   },
-  components: { MobileHeader },
+  components: { MobileHeader, FontSizeWrapper },
   methods: {
+    ...mapActions(["changePageScale"]),
+    onSizeClick(size) {
+      changePageScale(size);
+    },
     toHomePage() {
       this.$router.push("/");
     },
@@ -21,6 +27,7 @@ export default {
   mounted() {
     if (top.innerWidth < 600) {
       this.isMobile = false;
+      this.changePageScale(0.9);
     }
   },
 };
@@ -50,9 +57,29 @@ export default {
         >
           {{ headerLink.title }}
         </nuxt-link>
-        <button class="header-link font-size-button">A</button>
-        <button class="header-link font-size-button">A</button>
-        <button class="header-link font-size-button">A</button>
+        <FontSizeWrapper>
+          <button
+            class="font-size-button"
+            @click="changePageScale(0.8)"
+            style="font-size: 16px; line-height: 16px"
+          >
+            A
+          </button>
+          <button
+            class="font-size-button"
+            @click="changePageScale(1)"
+            style="font-size: 20px; line-height: 17px"
+          >
+            A
+          </button>
+          <button
+            class="font-size-button"
+            @click="changePageScale(1.3)"
+            style="font-size: 26px; line-height: 21px"
+          >
+            A
+          </button>
+        </FontSizeWrapper>
       </div>
       <div class="header-buttons-wrapper">
         <button @click="toHomePage()">
@@ -70,10 +97,10 @@ export default {
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
 @import "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0";
 .font-size-button {
+  font-size: 16px;
+  color: #2079a9;
   background: transparent;
   border: none;
-  padding: 0;
-  margin: 0;
   cursor: pointer;
 }
 .header-wrapper {
@@ -121,7 +148,7 @@ export default {
 }
 .header-link {
   font-size: 16px;
-  margin-left: 16px;
+  margin: 3px 16px 0 0;
   color: #2079a9;
   text-decoration: underline;
 }
