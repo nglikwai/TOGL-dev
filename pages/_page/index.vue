@@ -15,6 +15,8 @@ export default {
 .wrapper {
   height: 100vh;
   background-image: url("../../assets/images/background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
