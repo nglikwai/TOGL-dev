@@ -1,9 +1,9 @@
 <script>
-import { registerQuestions } from "../../data";
-import Checkbox from "../Common/CheckBox";
-import Footer from "../Common/Footer";
-import Tag from "../Common/Tag";
-import Input from "../Common/Input";
+import { registerQuestions } from "@/src/data";
+import Checkbox from "@/src/components/Common/CheckBox";
+import Footer from "@/src/components/Common/Footer";
+import Tag from "@/src/components/Common/Tag";
+import Input from "@/src/components/Common/Input";
 import { mapState, mapActions } from "vuex";
 import {
   Title,
