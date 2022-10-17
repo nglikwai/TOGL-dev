@@ -1,10 +1,10 @@
 <script>
-import { registerQuestions } from "@/src/data";
-import Checkbox from "@/src/components/common/CheckBox";
-import Footer from "@/src/components/common/Footer";
-import Tag from "@/src/components/common/Tag";
-import DatePicker from "@/src/components/common/DatePicker";
-import Input from "@/src/components/common/Input";
+import { registerQuestions } from "~/src/data";
+import Checkbox from "~/src/components/common/CheckBox";
+import Footer from "~/src/components/common/Footer";
+import Tag from "~/src/components/common/Tag";
+import DatePicker from "~/src/components/common/DatePicker";
+import Input from "~/src/components/common/Input";
 import { mapState, mapActions } from "vuex";
 import {
   Title,
