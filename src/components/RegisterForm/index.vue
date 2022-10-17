@@ -1,11 +1,11 @@
 <script>
-import { registerQuestions } from "../../data";
-import Checkbox from "../CheckBox.vue";
-import Footer from "../Footer.vue";
-import Tag from "../Tag.vue";
-import DatePicker from "../Common/DatePicker";
-import Input from "../Common/Input";
-import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { registerQuestions } from "@/src/data";
+import Checkbox from "@/src/components/common/CheckBox";
+import Footer from "@/src/components/common/Footer";
+import Tag from "@/src/components/common/Tag";
+import DatePicker from "@/src/components/common/DatePicker";
+import Input from "@/src/components/common/Input";
+import { mapState, mapActions } from "vuex";
 import {
   Title,
   Warning,
@@ -101,7 +101,7 @@ export default {
                 <div v-if="question.element === 'file'">
                   <UploadButton :scale="pageScale">
                     {{ question.label }}
-                    <img :src="require('../../../assets/icon/upload.svg')" />
+                    <img :src="require('~/assets/icon/upload.svg')" />
                     <input
                       type="file"
                       id="file"

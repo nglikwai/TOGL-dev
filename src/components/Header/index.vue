@@ -1,7 +1,7 @@
 <script>
-import { headerLinks } from "../../data";
+import { headerLinks } from "@/src/data";
 import MobileHeader from "./MobileHeader";
-import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { mapActions } from "vuex";
 import { FontSizeWrapper } from "./styledComponents";
 export default {
   data() {
@@ -39,15 +39,14 @@ export default {
       <MobileHeader @toggleMobileMenu="toggleMobileMenu()" />
     </div>
 
-    <img :src="require('../../../assets/images/logo.png')" alt="logo" />
+    <img :src="require('@/assets/images/logo.png')" alt="logo" />
     <span
-      class="material-symbols-outlined header-button"
-      v-if="isMobile === false"
+      class="material-symbols-outlined header-button showWhenMobile"
       @click="toggleMobileMenu()"
     >
       menu
     </span>
-    <div class="header-right" v-if="isMobile === true">
+    <div class="header-right showWhenDesktop">
       <div class="link-container">
         <nuxt-link
           :to="headerLink.link"
@@ -60,22 +59,10 @@ export default {
         <FontSizeWrapper>
           <button
             class="font-size-button"
-            @click="changePageScale(0.8)"
-            style="font-size: 16px; line-height: 16px"
-          >
-            A
-          </button>
-          <button
-            class="font-size-button"
-            @click="changePageScale(1)"
-            style="font-size: 20px; line-height: 17px"
-          >
-            A
-          </button>
-          <button
-            class="font-size-button"
-            @click="changePageScale(1.3)"
-            style="font-size: 26px; line-height: 21px"
+            v-for="scale in [0.8, 1, 1.3]"
+            :key="scale"
+            @click="changePageScale(scale)"
+            :style="{ fontSize: 20 * scale + 'px', lineHeight: '84%' }"
           >
             A
           </button>
@@ -92,39 +79,8 @@ export default {
     </div>
   </div>
 </template>
-<style>
-@font-face {
-  font-family: Hind Madurai Light;
-  src: url("./assets/font/HindMadurai-Light.ttf") format("truetype");
-}
 
-@font-face {
-  font-family: Hind Madurai Medium;
-  src: url("./assets/font/HindMadurai-Medium.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: Hind Madurai Regular;
-  src: url("./assets/font/HindMadurai-Regular.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: Hind Madurai SemiBold;
-  src: url("./assets/font/HindMadurai-SemiBold.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: Hind Madurai Bold;
-  src: url("./assets/font/HindMadurai-Bold.ttf") format("truetype");
-}
-
-::-webkit-scrollbar {
-  width: 0px;
-}
-</style>
 <style scoped>
-@import "https://fonts.googleapis.com/icon?family=Material+Icons";
-@import "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0";
 .font-size-button {
   font-size: 16px;
   color: #2079a9;
@@ -156,6 +112,7 @@ export default {
 
 .header-buttons-wrapper {
   display: flex;
+  justify-content: flex-end;
 }
 .header-button {
   border: none;
