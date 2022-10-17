@@ -1,7 +1,7 @@
 <script>
 import { registerQuestions } from "../../data";
-import Checkbox from "../common/CheckBox/index.vue";
-import Footer from "../common/Footer/index.vue";
+import Checkbox from "../common/checkBox/index.vue";
+import Footer from "../common/footer";
 import Tag from "../common/Tag/index.vue";
 import Input from "../common/Input/index.vue";
 import { mapState, mapActions } from "vuex";
