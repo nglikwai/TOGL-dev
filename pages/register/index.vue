@@ -19,18 +19,11 @@ export default {
   <div class="wrapper">
     <Header />
     <RegisterForm />
-    <!-- <Button @click="loginAction(this.$store.state.login.username)">hi</Button> -->
   </div>
 </template>
 
 <style lang="scss" scoped>
 .wrapper {
-  font-family: Hind Madurai Regular;
-  background: #d8ecf4;
-  background-image: url("../../assets/images/background.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
   height: 100vh;
   display: flex;
   flex-direction: column;

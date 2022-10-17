@@ -2,7 +2,7 @@
   <footer>
     <div class="footer-inner">
       <div class="left-wrapper">
-        <img :src="require('../../assets/images/land-logo.png')" alt="" />
+        <img :src="require('@/assets/images/land-logo.png')" alt="" />
         <div class="info-wrapper">
           <a href="/">Important Notices</a> |
           <a href="/">Privacy Policy Statement</a>
@@ -10,7 +10,7 @@
           <div>All Right Reserved</div>
         </div>
       </div>
-      <img :src="require('../../assets/images/w3c.png')" alt="" />
+      <img :src="require('@/assets/images/w3c.png')" alt="" />
     </div>
   </footer>
 </template>
@@ -52,6 +52,9 @@ footer {
   .footer-inner {
     flex-direction: column;
     justify-content: flex-end;
+  }
+  .info-wrapper {
+    font-size: 16px;
   }
 }
 </style>
