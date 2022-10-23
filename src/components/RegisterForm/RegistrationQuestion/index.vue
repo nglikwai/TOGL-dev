@@ -8,13 +8,15 @@
         {{ label }}
       </div>
       <div
-        :class="`register_li_input layui-form ${error && 'register_li_error'}`"
+        :class="`register_li_input layui-form`"
+        @click="(e) => clearError(e)"
       >
         <input
           v-bind:value="data"
           @input="$emit('onInput', $event.target.value)"
           :type="type"
           class="form-input"
+          :required="!content.includes('Optional') === true"
         />
         <i v-if="error" class="fa fa-exclamation-circle"></i>
       </div>
@@ -50,6 +52,22 @@ export default {
     line: Number,
     label: String,
     index: Number,
+    required: Boolean,
+    answer: Object,
+  },
+  methods: {
+    clearError(e) {
+      const target = e.path[1];
+      target.classList.remove("register_li_error");
+      if (target.children[1]) {
+        target.removeChild(target.children[1]);
+      }
+    },
+  },
+  updated() {
+    if (this.answer[this.content] === "") {
+      this.error = true;
+    }
   },
 };
 </script>

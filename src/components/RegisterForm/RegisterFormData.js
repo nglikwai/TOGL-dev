@@ -1,6 +1,6 @@
 export const sessionTwoQuestions = [
     {
-        content: ['Family Name', 'Given Name']
+        content: ['Family Name', 'Given Name'],
     },
     {
         content: ["Position in the Applicant Organization"],
@@ -47,7 +47,7 @@ export const sessionOneQuestions = [
         ],
     },
     {
-        content: ['Registration Number(Optional)']
+        content: ['Registration Number(Optional)'],
     }
 ]
 
@@ -75,35 +75,6 @@ export const initDatePicker = (id) => {
                 theme: "#2CA2B9",
                 lang: "en",
             });
-        });
-    }, 1000);
-
-}
-
-export const initXmSelector = (id) => {
-    installScript("https://html5.samprasdev.com/LandsD/js/xm-select.js");
-    setTimeout(() => {
-        id = xmSelect.render({
-            el: "#district_select",
-            language: "en",
-            filterable: true,
-            theme: {
-                color: "#3D9DD1",
-            },
-            data: [
-                { name: "Hong Kong East", value: 1 },
-                { name: "Hong Kong West and South", value: 2 },
-                { name: "Kowloon East", value: 3 },
-                { name: "Kowloon West", value: 4 },
-                { name: "Islands", value: 5 },
-                { name: "North", value: 6 },
-                { name: "Sha Tin", value: 7 },
-                { name: "Sai Kung", value: 8 },
-                { name: "Tai Po", value: 9 },
-                { name: "Tsuen Wan and Kwai Tsing", value: 10 },
-                { name: "Tuen Mun", value: 11 },
-                { name: "Yuen Long", value: 12 },
-            ],
         });
     }, 1000);
 

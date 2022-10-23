@@ -3,13 +3,15 @@ import OptionRadio from "@/src/components/Common/OptionRadio";
 import Tag from "@/src/components/Common/Tag";
 import RegistrationContent from "./RegistrationContent";
 import RegistrationQuestion from "./RegistrationQuestion";
+import { initXmSelect, getValue } from "../../utility/xmSelect";
+
 import {
   sessionTwoQuestions,
   natureOfOrganization,
   sessionOneQuestions,
   initDatePicker,
-  initXmSelector,
 } from "./RegisterFormData";
+
 export default {
   components: { OptionRadio, RegistrationContent, RegistrationQuestion, Tag },
   data() {
@@ -40,13 +42,25 @@ export default {
       this.$router.push(link);
     },
     onApply() {
+      const answerList = document.querySelectorAll(".register_li_input");
+      answerList.forEach((answer) => {
+        const isRequired = answer.firstElementChild.required;
+        const value = answer.firstElementChild.value;
+        if (isRequired && value === "") {
+          const errorIcon = document.createElement("i");
+          errorIcon.classList.add("fa", "fa-exclamation-circle");
+          answer.children.length < 2 && answer.appendChild(errorIcon);
+          answer.classList.add("register_li_error");
+        }
+      });
+      console.log(getValue());
       console.log(this.answer);
     },
   },
   beforeMount() {},
   mounted() {
     initDatePicker("validityPeriod");
-    initXmSelector("serviceDistrict");
+    initXmSelect("serviceDistrict");
   },
 };
 </script>
@@ -56,7 +70,7 @@ export default {
     <div class="register_bg"></div>
     <div class="register_width">
       <div class="register_title"><b>Create Your Account</b></div>
-      <div class="register_txt">
+      <form action="/" method="get" class="register_txt">
         *Fields are required if not otherwise stated.
         <div class="register_txt_title title_24">
           <b>Details of Organization :</b>
@@ -73,6 +87,7 @@ export default {
           v-for="question in sessionOneQuestions"
           :question="question"
           @onInput="(e) => (answer[question.content[e.index]] = e.answer)"
+          :answer="answer"
         />
 
         <div class="clear"></div>
@@ -99,6 +114,7 @@ export default {
           :key="question.content[0]"
           :question="question"
           @onInput="(e) => (answer[question.content[e.index]] = e.answer)"
+          :answer="answer"
         />
 
         <div class="clear"></div>
@@ -205,9 +221,15 @@ export default {
           >
             Back
           </button>
-          <button class="register_botton_but" @click="onApply()">Apply</button>
+
+          <input
+            type="submit"
+            class="register_botton_but"
+            value="Apply"
+            @click="onApply()"
+          />
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>
@@ -219,6 +241,7 @@ export default {
     position: absolute;
     opacity: 0;
     cursor: pointer;
+    width: 100%;
   }
 }
 </style>
