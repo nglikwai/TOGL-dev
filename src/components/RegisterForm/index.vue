@@ -1,55 +1,29 @@
 <script>
-import { registerQuestions } from "@/src/data";
-import Checkbox from "@/src/components/Common/CheckBox";
-import Footer from "@/src/components/Common/Footer";
+import OptionRadio from "@/src/components/Common/OptionRadio";
 import Tag from "@/src/components/Common/Tag";
-import Input from "@/src/components/Common/Input";
-import { mapState, mapActions } from "vuex";
+import RegistrationContent from "./RegistrationContent";
+import RegistrationQuestion from "./RegistrationQuestion";
 import {
-  Title,
-  Warning,
-  sessionTitle,
-  UploadButton,
-  QuestionTitle,
-  QuestionInstruction,
-  QuestionDescription,
-  ApplyButton,
-  BackButton,
-} from "./styledComponents";
+  sessionTwoQuestions,
+  natureOfOrganization,
+  sessionOneQuestions,
+  initDatePicker,
+  initXmSelector,
+} from "./RegisterFormData";
 export default {
-  computed: mapState(["pageScale"]),
-
+  components: { OptionRadio, RegistrationContent, RegistrationQuestion, Tag },
   data() {
     return {
-      registerQuestions,
+      sessionOneQuestions,
+      sessionTwoQuestions,
+      natureOfOrganization,
       answer: {},
-      tags: [],
+      tags: ["Document A.pdf", "Document B.pdf"],
     };
   },
-  components: {
-    Checkbox,
-    Footer,
-    Tag,
-    Input,
-    Title,
-    Warning,
-    sessionTitle,
-    UploadButton,
-    QuestionTitle,
-    QuestionInstruction,
-    QuestionDescription,
-    ApplyButton,
-    BackButton,
-  },
+
   methods: {
-    ...mapActions(["changePageScale"]),
-    onSubmit() {
-      // this.$emit("loginAction", this.username);
-    },
-    redirect(link) {
-      this.$router.push(link);
-    },
-    uploadFile(event) {
+    onUploadFile(event) {
       for (const file in event.target.files) {
         if (typeof event.target.files[file] === "object") {
           this.tags = [...this.tags, event.target.files[file].name];
@@ -59,212 +33,192 @@ export default {
     onDeleteTag(tag) {
       this.tags = this.tags.filter((item) => item !== tag);
     },
+    onInput(target) {
+      answer[target.question] = target.answer;
+    },
+    redirect(link) {
+      this.$router.push(link);
+    },
     onApply() {
       console.log(this.answer);
     },
+  },
+  beforeMount() {},
+  mounted() {
+    initDatePicker("validityPeriod");
+    initXmSelector("serviceDistrict");
   },
 };
 </script>
 
 <template>
-  <div class="outer-wrapper">
-    <div class="heading" style="z-index: 10; padding: 20px"></div>
-    <div class="heading" style="border-radius: 0 0 25px 25px"></div>
-    <div class="lower-wrapper">
-      <div class="form-wrapper">
-        <div class="form-inner-wrapper">
-          <Title :scale="pageScale">Create Your Account</Title>
-          <div class="session">
-            <Warning :scale="pageScale">
-              *Fields are required if not otherwise stated.
-            </Warning>
-            <button></button>
-            <div
-              v-for="session in registerQuestions"
-              :key="session.sessionTitle"
-              class="questions-wrapper"
-            >
-              <sessionTitle :scale="pageScale">{{
-                session.sessionTitle
-              }}</sessionTitle>
-              <div
-                class="question"
-                :style="question.line === 0.5 && 'width:auto;'"
-                v-for="question in session.questions"
-                :key="question.title"
-              >
-                <QuestionTitle :scale="pageScale">{{
-                  question.title
-                }}</QuestionTitle>
-                <div v-if="question.element === 'file'">
-                  <UploadButton :scale="pageScale">
-                    {{ question.label }}
-                    <img :src="require('~/assets/icon/upload.svg')" />
-                    <input
-                      type="file"
-                      id="file"
-                      accept="image/png, image/jpeg, application/pdf"
-                      multiple
-                      @change="uploadFile"
-                    />
-                  </UploadButton>
-                  <div class="tag-wrapper">
-                    <div v-for="tag in tags" :key="tag">
-                      <Tag :tag="tag" @deleteTag="onDeleteTag" />
-                    </div>
-                  </div>
-                </div>
+  <div class="container">
+    <div class="register_bg"></div>
+    <div class="register_width">
+      <div class="register_title"><b>Create Your Account</b></div>
+      <div class="register_txt">
+        *Fields are required if not otherwise stated.
+        <div class="register_txt_title title_24">
+          <b>Details of Organization :</b>
+        </div>
+        <div class="register_txt_label title_24">Nature of Organization</div>
+        <div class="register_li">
+          <div v-for="(option, index) in natureOfOrganization" :key="option">
+            <OptionRadio :option="option" :index="index" />
+          </div>
+        </div>
+        <div class="clear"></div>
 
-                <div v-if="question.description">
-                  <QuestionDescription
-                    :scale="pageScale"
-                    v-for="item in question.description"
-                    :key="item"
-                  >
-                    <Checkbox v-if="question.element === 'checkbox'" />{{
-                      item
-                    }}
-                  </QuestionDescription>
-                </div>
+        <RegistrationContent
+          v-for="question in sessionOneQuestions"
+          :question="question"
+          @onInput="(e) => (answer[question.content[e.index]] = e.answer)"
+        />
 
-                <QuestionInstruction
-                  :scale="pageScale"
-                  v-if="question.instruction"
-                >
-                  {{ question.instruction }}
-                </QuestionInstruction>
-
-                <Input
-                  :data="answer[question.code]"
-                  @input="(e) => (answer[question.code] = e)"
-                  :question="question"
-                />
+        <div class="clear"></div>
+        <div class="register_centent">
+          <div class="register_50">
+            <div class="register_txt_label title_24">
+              Validity Period(Optional)
+            </div>
+            <div class="register_li">
+              <div class="layui-form register_li_input register_input_50">
+                <input type="text" class="form-input" id="validityPeriod" />
+                <i class="fa fa-calendar"></i>
               </div>
             </div>
           </div>
-          <div class="action-button">
-            <BackButton :scale="pageScale" @click="redirect('/')"
-              >Back</BackButton
-            >
-            <ApplyButton :scale="pageScale" @click="onApply()"
-              >Apply</ApplyButton
-            >
+        </div>
+        <div class="clear"></div>
+        <div class="register_txt_title padding_20 title_24">
+          <b>Contact information:</b>
+        </div>
+
+        <RegistrationContent
+          v-for="question in sessionTwoQuestions"
+          :key="question.content[0]"
+          :question="question"
+          @onInput="(e) => (answer[question.content[e.index]] = e.answer)"
+        />
+
+        <div class="clear"></div>
+
+        <div class="register_txt_title padding_20 title_24">
+          <b>Supporting Documents</b>
+        </div>
+        <div class="register_li">
+          I/We attach the following documents in support of my/our application
+          (please see belows Note (1)):<br />
+          (a) documentary evidence to prove that the Applicant is a charitable
+          institution or trust of apublic character exempt from tax under
+          section 88 of the Inland Revenue Ordinance Cap.112 (if applicable);<br />
+          (b) documentary evidence to prove that the Applicant is a society
+          registered under the Societies Ordinance Cap. 151 (if applicable);
+          or<br />
+          (C) documentary evidence to prove that the Applicant is a legally
+          registered body (please specify).
+          <div class="register_centent">
+            <div class="register_50 padding_10">
+              <input type="text" class="form-input" />
+            </div>
+          </div>
+
+          <div class="register_Upload">
+            <button type="button" class="layui-btn upload-button">
+              <input
+                type="file"
+                id="file"
+                accept="image/png, image/jpeg, application/pdf"
+                multiple
+                @change="onUploadFile"
+              />
+              Upload New Documents <i class="fa fa-upload"></i>
+            </button>
+            <div class="register_Upload_table">
+              <Tag
+                v-for="tag in tags"
+                :key="tag"
+                :tag="tag"
+                @deleteTag="onDeleteTag"
+              />
+            </div>
+          </div>
+          I/We acknowledge and agree that failure to submit the required
+          documents may lead to rejection of the application. I/We also
+          acknowledge and agree that I/we may need to submit other additional
+          information or documents as may be required by the Lands Department to
+          facilitate the assessment of my/our application. Unless such
+          additional information/documents are submitted, my/our application
+          cannot be further processed.
+          <br />NOTE:<br />
+          (1) No documentation proof is required if the application is made by
+          incumbent Lego Members/DC Members, Government departments or statutory
+          organisations.
+          <div class="clear"></div>
+        </div>
+
+        <div class="clear"></div>
+        <div class="register_centent">
+          <div class="register_50">
+            <div class="register_txt_label title_24">
+              Which service district you are for?
+            </div>
+            <div class="register_li">
+              <div class="register_li_input layui-form">
+                <div id="district_select">
+                  <div class="div" id="serviceDistrict"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+        <div class="clear"></div>
+        <div class="register_centent">
+          <div class="register_100">
+            <div class="register_txt_label title_24">
+              Agreement for privacy policy
+            </div>
+            <div class="register_li">
+              <div class="register_radio_li">
+                <div class="payment_radio_li title_20">
+                  <input
+                    type="radio"
+                    class="radio_class"
+                    name="Agreement"
+                    id="Agreement_1"
+                  />
+                  <label for="Agreement_1">
+                    I understand and agree to the
+                    <a href="#"><b>User Agreement Privacy Policy</b></a>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <Footer />
+        <div class="register_botton padding_10">
+          <button
+            href="index.html"
+            @click="redirect('/')"
+            class="register_botton_a"
+          >
+            Back
+          </button>
+          <button class="register_botton_but" @click="onApply()">Apply</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.outer-wrapper {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: calc(100vh - 139px);
-}
-
-.heading {
-  background: white;
-  border-radius: 25px 25px 0px 0px;
-  padding: 100px;
-  width: 100%;
-  max-width: 1420px;
-}
-
-.lower-wrapper {
-  width: 100%;
-  margin-top: 20px;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  height: calc(100vh - 139px);
-}
-
-.form-wrapper {
-  width: 100%;
-  max-width: 1420px;
-  padding-bottom: 160px;
-}
-
-.form-inner-wrapper {
-  padding: 20px 20px 0 20px;
-  background: white;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 100px;
-  border-radius: 25px;
-}
-
-.session {
-  padding: 40px 80px;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.questions-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.question {
-  padding: 16px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 80%;
-  padding-right: 40px;
-}
-
-.tag-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.question button input[type="file"] {
-  position: absolute;
-  max-width: 400px;
-  opacity: 0;
-  cursor: pointer;
-  width: 95%;
-}
-
-.action-button {
-  padding-top: 50px;
-  display: flex;
-}
-
-.action-button button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-@media only screen and (max-width: 600px) {
-  .session {
-    padding: 40px 0px;
-    width: 100%;
-  }
-  .question {
-    width: 100%;
-    padding: 16px 0;
-  }
-  .session input[type="text"] {
-    margin-left: 0;
-  }
-  .question-instruction {
-    padding-left: 0;
+.upload-button {
+  position: relative;
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
   }
 }
 </style>

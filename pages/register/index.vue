@@ -1,6 +1,8 @@
 <script>
-import RegisterForm from "../../src/components/RegisterForm";
-import Header from "../../src/components/Header";
+import RegisterForm from "@/src/components/RegisterForm";
+import Header from "@/src/components/Header";
+import Footer from "@/src/components/Common/Footer";
+
 export default {
   name: "App",
   data() {
@@ -11,7 +13,7 @@ export default {
   mounted() {
     console.log("mounted");
   },
-  components: { RegisterForm, Header },
+  components: { RegisterForm, Header, Footer },
 };
 </script>
 
@@ -19,6 +21,7 @@ export default {
   <div class="wrapper">
     <Header />
     <RegisterForm />
+    <Footer />
   </div>
 </template>
 
