@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer-wrapper">
+  <div class="footer-wrapper">
     <div class="foot">
       <div class="container">
         <div class="foot_left">
@@ -16,19 +16,19 @@
         </div>
       </div>
     </div>
-  </footer>
+  </div>
 </template>
 
 <script>
 export default {};
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .container {
-  width: 100vw;
+  width: 100%;
 }
 .footer-wrapper {
-  background: #ecf6fb;
+  background-color: #ecf6fb;
   width: 100vw;
   display: flex;
   flex-direction: column;

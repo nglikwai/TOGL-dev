@@ -4,6 +4,7 @@ import Tag from "@/src/components/Common/Tag";
 import RegistrationContent from "./RegistrationContent";
 import RegistrationQuestion from "./RegistrationQuestion";
 import { initXmSelect, getValue } from "../../utility/xmSelect";
+import { mapActions, mapMutations } from "vuex";
 
 import {
   sessionTwoQuestions,
@@ -25,6 +26,7 @@ export default {
   },
 
   methods: {
+    ...mapMutations(["updateIsSubmitted"]),
     onUploadFile(event) {
       for (const file in event.target.files) {
         if (typeof event.target.files[file] === "object") {
@@ -42,22 +44,22 @@ export default {
       this.$router.push(link);
     },
     onApply() {
-      const answerList = document.querySelectorAll(".register_li_input");
-      answerList.forEach((answer) => {
-        const isRequired = answer.firstElementChild.required;
-        const value = answer.firstElementChild.value;
-        if (isRequired && value === "") {
-          const errorIcon = document.createElement("i");
-          errorIcon.classList.add("fa", "fa-exclamation-circle");
-          answer.children.length < 2 && answer.appendChild(errorIcon);
-          answer.classList.add("register_li_error");
-        }
-      });
+      // const answerList = document.querySelectorAll(".register_li_input");
+      // answerList.forEach((answer) => {
+      //   const isRequired = answer.firstElementChild.required;
+      //   const value = answer.firstElementChild.value;
+      //   if (isRequired && value === "") {
+      //     const errorIcon = document.createElement("i");
+      //     errorIcon.classList.add("fa", "fa-exclamation-circle");
+      //     answer.children.length < 2 && answer.appendChild(errorIcon);
+      //     answer.classList.add("register_li_error");
+      //   }
+      // });
+      this.updateIsSubmitted();
       console.log(getValue());
       console.log(this.answer);
     },
   },
-  beforeMount() {},
   mounted() {
     initDatePicker("validityPeriod");
     initXmSelect("serviceDistrict");

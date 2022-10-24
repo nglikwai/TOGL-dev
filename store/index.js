@@ -1,5 +1,5 @@
 export const state = () => ({
-    pageScale: 1
+    isSubmited: false
 })
 
 //getters
@@ -7,15 +7,14 @@ export const getters = {
 }
 //actions
 export const actions = {
-    changePageScale({ commit }, size) {
-        commit("updatepageScale", size)
-        return size
+    submitForm({ commit }) {
+        commit("updateIsSubmitted")
     },
 
 }
 //mutations
 export const mutations = {
-    updatepageScale(state, size) {
-        state.pageScale = size
+    updateIsSubmitted(state) {
+        state.isSubmited = true
     }
 }

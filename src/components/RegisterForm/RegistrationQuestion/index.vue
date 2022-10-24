@@ -8,8 +8,8 @@
         {{ label }}
       </div>
       <div
-        :class="`register_li_input layui-form`"
-        @click="(e) => clearError(e)"
+        :class="`register_li_input layui-form ${error && 'register_li_error'}`"
+        @click="clearError()"
       >
         <input
           v-bind:value="data"
@@ -28,11 +28,10 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
-    return {
-      error: false,
-    };
+    return { error: false };
   },
   props: {
     data: Function,
@@ -53,22 +52,36 @@ export default {
     label: String,
     index: Number,
     required: Boolean,
-    answer: Object,
   },
   methods: {
-    clearError(e) {
-      const target = e.path[1];
-      target.classList.remove("register_li_error");
-      if (target.children[1]) {
-        target.removeChild(target.children[1]);
-      }
+    clearError() {
+      this.error = false;
+      // const target = e.path[1];
+      // target.classList.remove("register_li_error");
+      // if (target.children[1]) {
+      //   target.removeChild(target.children[1]);
+      // }
     },
   },
-  updated() {
-    if (this.answer[this.content] === "") {
-      this.error = true;
-    }
+  computed: mapState(["isSubmited"]),
+  mounted() {
+    console.log(this.isSubmited);
   },
+  watch: {
+    isSubmited: function () {
+      this.error = true;
+    },
+  },
+
+  // computed: {
+  //   // error() {
+  //   //   return (
+  //   //     this.$store.state.isSubmited &&
+  //   //     !this.content.includes("Optional") &&
+  //   //     $event.target.value == ""
+  //   //   );
+  //   // },
+  // },
 };
 </script>
 

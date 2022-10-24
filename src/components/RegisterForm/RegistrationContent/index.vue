@@ -13,7 +13,6 @@
         :line="question.line"
         :label="question.label && question.label[index]"
         :required="question.required !== false"
-        :answer="answer"
         @onInput="(e) => $emit('onInput', { answer: e, index })"
       />
     </div>
@@ -24,7 +23,7 @@
 import RegistrationQuestion from "../RegistrationQuestion";
 export default {
   components: { RegistrationQuestion },
-  props: ["question", "answer"],
+  props: ["question"],
 };
 </script>
 

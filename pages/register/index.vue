@@ -27,7 +27,6 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -44,13 +44,15 @@ html {
 }
 
 body {
+  background: #ecf6fb;
+  background: url(@/assets/images/hp_background.jpg) center center no-repeat;
+  background-size: cover;
   margin: 0;
   padding: 0;
   color: #3b5974;
   height: 100%;
   font-weight: 500;
   font-size: 16px;
-  background: #fff;
   font-family: "ManropeRegular", "Helvetica Neue", Helvetica, Arial, "俪 Pro",
     "LiHei Pro", "STHeiti", "Apple LiGothic Medium", "微软正体",
     "Microsoft JhengHei", sans-serif;
@@ -635,7 +637,7 @@ xm-select > .xm-label.single-row {
   overflow: hidden;
   position: relative;
   z-index: 3;
-  overflow: hidden;
+  width: 100%;
   font-family: "ManropeBlack", "Helvetica Neue", Helvetica, Arial, "俪 Pro",
     "LiHei Pro", "STHeiti", "Apple LiGothic Medium", "微软正体",
     "Microsoft JhengHei", sans-serif;
