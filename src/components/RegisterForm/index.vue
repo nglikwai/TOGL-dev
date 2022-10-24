@@ -26,7 +26,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["updateIsSubmitted"]),
+    ...mapMutations("register", ["updateIsSubmitted"]),
     onUploadFile(event) {
       for (const file in event.target.files) {
         if (typeof event.target.files[file] === "object") {
@@ -44,17 +44,6 @@ export default {
       this.$router.push(link);
     },
     onApply() {
-      // const answerList = document.querySelectorAll(".register_li_input");
-      // answerList.forEach((answer) => {
-      //   const isRequired = answer.firstElementChild.required;
-      //   const value = answer.firstElementChild.value;
-      //   if (isRequired && value === "") {
-      //     const errorIcon = document.createElement("i");
-      //     errorIcon.classList.add("fa", "fa-exclamation-circle");
-      //     answer.children.length < 2 && answer.appendChild(errorIcon);
-      //     answer.classList.add("register_li_error");
-      //   }
-      // });
       this.updateIsSubmitted();
       console.log(getValue());
       console.log(this.answer);
@@ -92,20 +81,6 @@ export default {
           :answer="answer"
         />
 
-        <div class="clear"></div>
-        <div class="register_centent">
-          <div class="register_50">
-            <div class="register_txt_label title_24">
-              Validity Period(Optional)
-            </div>
-            <div class="register_li">
-              <div class="layui-form register_li_input register_input_50">
-                <input type="text" class="form-input" id="validityPeriod" />
-                <i class="fa fa-calendar"></i>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="clear"></div>
         <div class="register_txt_title padding_20 title_24">
           <b>Contact information:</b>

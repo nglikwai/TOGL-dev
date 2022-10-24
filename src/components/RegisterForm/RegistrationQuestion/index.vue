@@ -8,7 +8,9 @@
         {{ label }}
       </div>
       <div
-        :class="`register_li_input layui-form ${error && 'register_li_error'}`"
+        :class="`register_li_input layui-form ${
+          error && 'register_li_error'
+        } ${styles}`"
         @click="clearError()"
       >
         <input
@@ -16,9 +18,12 @@
           @input="$emit('onInput', $event.target.value)"
           :type="type"
           class="form-input"
-          :required="!content.includes('Optional') === true"
+          :required="isRequired"
+          :id="question.id"
+          @change="(e) => setValue(e)"
         />
         <i v-if="error" class="fa fa-exclamation-circle"></i>
+        <i v-if="question.icon" :class="`fa fa-${question.icon}`"></i>
       </div>
       <div v-if="line === 2" class="register_li_input padding_10">
         <input :type="type" class="form-input" />
@@ -31,7 +36,7 @@
 import { mapState } from "vuex";
 export default {
   data() {
-    return { error: false };
+    return { error: false, value: "" };
   },
   props: {
     data: Function,
@@ -52,36 +57,32 @@ export default {
     label: String,
     index: Number,
     required: Boolean,
+    styles: String,
+    question: Object,
   },
   methods: {
     clearError() {
       this.error = false;
-      // const target = e.path[1];
-      // target.classList.remove("register_li_error");
-      // if (target.children[1]) {
-      //   target.removeChild(target.children[1]);
-      // }
     },
-  },
-  computed: mapState(["isSubmited"]),
-  mounted() {
-    console.log(this.isSubmited);
-  },
-  watch: {
-    isSubmited: function () {
-      this.error = true;
+    setValue(e) {
+      this.value = e.target.value;
     },
   },
 
-  // computed: {
-  //   // error() {
-  //   //   return (
-  //   //     this.$store.state.isSubmited &&
-  //   //     !this.content.includes("Optional") &&
-  //   //     $event.target.value == ""
-  //   //   );
-  //   // },
-  // },
+  watch: {
+    isSubmited: function () {
+      if (this.isRequired && this.value === "") {
+        this.error = true;
+      }
+    },
+  },
+
+  computed: {
+    ...mapState("register", ["isSubmited"]),
+    isRequired() {
+      return !this.content.includes("Optional") === true;
+    },
+  },
 };
 </script>
 

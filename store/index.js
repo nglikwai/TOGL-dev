@@ -1,20 +1,13 @@
-export const state = () => ({
-    isSubmited: false
-})
+import Vuex from 'vuex';
+import registerModule from './registerModule';
 
-//getters
-export const getters = {
-}
-//actions
-export const actions = {
-    submitForm({ commit }) {
-        commit("updateIsSubmitted")
-    },
+const createStore = () => {
+    return new Vuex.Store({
+        modules: {
+            register: registerModule,
 
-}
-//mutations
-export const mutations = {
-    updateIsSubmitted(state) {
-        state.isSubmited = true
-    }
-}
+        }
+    });
+};
+
+export default createStore

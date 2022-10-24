@@ -1,3 +1,25 @@
+export const sessionOneQuestions = [
+    {
+        content: [
+            'Name of Organization/ Name of LegCo/ DC Member',
+            'Name of Sub-Organization(Optional)',
+        ],
+        label: [
+            'Provide registered organization name. Identical name required.',
+            'Please provide registered sub-organization name. Identical name required.',
+        ],
+    },
+    {
+        content: ['Registration Number(Optional)'],
+    },
+    {
+        content: ['Validity Period(Optional)'],
+        styles: 'register_input_50',
+        icon: "calendar",
+        id: "validityPeriod"
+    }
+]
+
 export const sessionTwoQuestions = [
     {
         content: ['Family Name', 'Given Name'],
@@ -35,21 +57,7 @@ export const natureOfOrganization = [
     'Other legally registered body ',
 ]
 
-export const sessionOneQuestions = [
-    {
-        content: [
-            'Name of Organization/ Name of LegCo/ DC Member',
-            'Name of Sub-Organization(Optional)',
-        ],
-        label: [
-            'Provide registered organization name. Identical name required.',
-            'Please provide registered sub-organization name. Identical name required.',
-        ],
-    },
-    {
-        content: ['Registration Number(Optional)'],
-    }
-]
+
 
 export const installScript = (url) => {
     let recaptchaScript = document.createElement("script");

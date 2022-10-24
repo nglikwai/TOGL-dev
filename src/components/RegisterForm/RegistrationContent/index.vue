@@ -9,10 +9,12 @@
         :content="content"
         :length="question.length"
         :fontSize="question.fontSize"
+        :question="question"
         :type="question.type"
         :line="question.line"
         :label="question.label && question.label[index]"
         :required="question.required !== false"
+        :styles="question.styles"
         @onInput="(e) => $emit('onInput', { answer: e, index })"
       />
     </div>
