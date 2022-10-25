@@ -556,6 +556,9 @@ select:focus {
 .register_botton {
   display: block;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: row-reverse;
 }
 
 .register_botton_a {

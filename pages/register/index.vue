@@ -5,9 +5,8 @@ import RegistrationContent from "./RegistrationContent";
 import RegistrationQuestion from "./RegistrationQuestion";
 import { initXmSelect, getValue } from "@/src/utility/xmSelect";
 import { mapMutations } from "vuex";
-import Wrapper from "@/src/components/Common/Wrapper"
-
-
+import Wrapper from "@/src/components/Common/Wrapper";
+import * as R from "ramda";
 import {
   sessionTwoQuestions,
   natureOfOrganization,
@@ -17,14 +16,24 @@ import {
 } from "@/src/data/registration";
 
 export default {
-  components: { OptionRadio, RegistrationContent, RegistrationQuestion, Tag, Wrapper },
+  components: {
+    OptionRadio,
+    RegistrationContent,
+    RegistrationQuestion,
+    Tag,
+    Wrapper,
+  },
   data() {
     return {
       sessionOneQuestions,
       sessionTwoQuestions,
       natureOfOrganization,
       supportingDocument,
-      answer: {},
+      answer: {
+        natureOfOrganization: "",
+        agreement: false,
+        serviceDistrict: [],
+      },
       tags: ["Document A.pdf", "Document B.pdf"],
     };
   },
@@ -45,12 +54,28 @@ export default {
       answer[target.question] = target.answer;
     },
     redirect(link) {
-      this.$router.push(link);
+      if (!R.isEmpty(this.answer)) {
+        confirm("Are you confirm to abandon the changes?");
+        this.$router.push(link);
+      } else {
+        this.$router.push(link);
+      }
+    },
+    validate() {
+      if (this.answer.natureOfOrganization === "") {
+        alert("You need to answer nature of organization");
+      } else if (getValue()[0] === "") {
+        alert("Please choose service district");
+      } else if (this.answer.agreement === false) {
+        alert("Please agree for privacy policy");
+      }
+      console.log(this.answer);
+      this.updateIsSubmitted();
     },
     onApply() {
-      this.updateIsSubmitted();
+      this.$router.push("/complete");
+      console.log(this.$store.state.register.isSubmited);
       console.log(getValue());
-      console.log(this.answer);
     },
   },
   mounted() {
@@ -66,7 +91,12 @@ export default {
       <div class="register_bg"></div>
       <div class="register_width">
         <div class="register_title"><b>Create Your Account</b></div>
-        <form action="/" method="get" class="register_txt">
+        <form
+          action="/"
+          @submit.prevent="onApply()"
+          method="post"
+          class="register_txt"
+        >
           *Fields are required if not otherwise stated.
           <div class="register_txt_title title_24">
             <b>Details of Organization :</b>
@@ -74,21 +104,34 @@ export default {
           <div class="register_txt_label title_24">Nature of Organization</div>
           <div class="register_li">
             <div v-for="(option, index) in natureOfOrganization" :key="option">
-              <OptionRadio :option="option" :index="index" :required="true"/>
+              <OptionRadio
+                :option="option"
+                :index="index"
+                @onInput="(e) => (answer.natureOfOrganization = index + 1)"
+              />
             </div>
           </div>
           <div class="clear"></div>
 
-          <RegistrationContent v-for="question in sessionOneQuestions" :question="question"
-            @onInput="(e) => (answer[question.content[e.index]] = e.answer)" :answer="answer" />
+          <RegistrationContent
+            v-for="question in sessionOneQuestions"
+            :question="question"
+            @onInput="(e) => (answer[question.content[e.index]] = e.answer)"
+            :answer="answer"
+          />
 
           <div class="clear"></div>
           <div class="register_txt_title padding_20 title_24">
             <b>Contact information:</b>
           </div>
 
-          <RegistrationContent v-for="question in sessionTwoQuestions" :key="question.content[0]" :question="question"
-            @onInput="(e) => (answer[question.content[e.index]] = e.answer)" :answer="answer" />
+          <RegistrationContent
+            v-for="question in sessionTwoQuestions"
+            :key="question.content[0]"
+            :question="question"
+            @onInput="(e) => (answer[question.content[e.index]] = e.answer)"
+            :answer="answer"
+          />
 
           <div class="clear"></div>
 
@@ -107,17 +150,27 @@ export default {
 
             <div class="register_Upload">
               <button type="button" class="layui-btn upload-button">
-                <input type="file" id="file" accept="image/png, image/jpeg, application/pdf" multiple
-                  @change="onUploadFile" />
+                <input
+                  type="file"
+                  id="file"
+                  accept="image/png, image/jpeg, application/pdf"
+                  multiple
+                  @change="onUploadFile"
+                />
                 Upload New Documents <i class="fa fa-upload"></i>
               </button>
               <div class="register_Upload_table">
-                <Tag v-for="tag in tags" :key="tag" :tag="tag" @deleteTag="onDeleteTag" />
+                <Tag
+                  v-for="tag in tags"
+                  :key="tag"
+                  :tag="tag"
+                  @deleteTag="onDeleteTag"
+                />
               </div>
             </div>
-            {{supportingDocument.agreement}}
+            {{ supportingDocument.agreement }}
             <br />NOTE:<br />
-            {{supportingDocument.agreementNote}}
+            {{ supportingDocument.agreementNote }}
             <div class="clear"></div>
           </div>
 
@@ -145,7 +198,13 @@ export default {
               <div class="register_li">
                 <div class="register_radio_li">
                   <div class="payment_radio_li title_20">
-                    <input  type="radio" class="radio_class" name="Agreement" id="Agreement_1" required />
+                    <input
+                      type="radio"
+                      class="radio_class"
+                      name="Agreement"
+                      id="Agreement_1"
+                      @input="answer.agreement = true"
+                    />
                     <label for="Agreement_1">
                       I understand and agree to the
                       <a href="#"><b>User Agreement Privacy Policy</b></a>
@@ -157,11 +216,20 @@ export default {
           </div>
 
           <div class="register_botton padding_10">
-            <button href="index.html" @click="redirect('/')" class="register_botton_a">
+            <button
+              type="submit"
+              class="register_botton_but"
+              @click="validate()"
+            >
+              Apply
+            </button>
+            <button
+              href="index.html"
+              @click="redirect('/')"
+              class="register_botton_a"
+            >
               Back
             </button>
-
-            <input type="submit" class="register_botton_but" value="Apply" @click="onApply()" />
           </div>
         </form>
       </div>
@@ -172,12 +240,17 @@ export default {
 <style lang="scss" scoped>
 .upload-button {
   position: relative;
-
+  @media screen and (max-width: 330px) {
+    width: 100%;
+  }
   input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
     width: 100%;
+    @media screen and (max-width: 330px) {
+      width: 100%;
+    }
   }
 }
 </style>

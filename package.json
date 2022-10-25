@@ -13,12 +13,14 @@
     "@nuxtjs/style-resources": "^1.2.1",
     "core-js": "^3.25.3",
     "nuxt": "^2.15.8",
+    "ramda": "^0.28.0",
     "vue": "^2.7.10",
     "vue-server-renderer": "^2.7.10",
     "vue-styled-components": "^1.6.0",
     "vue-template-compiler": "^2.7.10"
   },
   "devDependencies": {
+    "@types/ramda": "^0.28.18",
     "nuxt-windicss": "^2",
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",

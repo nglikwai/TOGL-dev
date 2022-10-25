@@ -15,7 +15,6 @@
       >
         <input
           v-bind:value="data"
-          @input="$emit('onInput', $event.target.value)"
           :type="type"
           class="form-input"
           :required="isRequired"
@@ -65,13 +64,14 @@ export default {
       this.error = false;
     },
     setValue(e) {
+      this.$emit("onInput", e.target.value);
       this.value = e.target.value;
     },
   },
 
   watch: {
     isSubmited: function () {
-      if (this.isRequired && this.value === "") {
+      if (this.isRequired && this.value.replace(/\s+/g, "") === "") {
         this.error = true;
       }
     },

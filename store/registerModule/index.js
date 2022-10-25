@@ -1,5 +1,5 @@
 export const state = () => ({
-    isSubmited: false
+    isSubmited: 0
 })
 
 //getters
@@ -15,7 +15,7 @@ export const actions = {
 //mutations
 export const mutations = {
     updateIsSubmitted(state) {
-        state.isSubmited = true
+        state.isSubmited = state.isSubmited + 1
     }
 }
 

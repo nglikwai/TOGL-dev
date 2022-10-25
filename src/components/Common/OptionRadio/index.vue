@@ -3,10 +3,12 @@
     <div class="payment_radio_li title_20">
       <input
         type="radio"
+        :value="option"
         class="radio_class"
-        name="delivery_radio"
+        name="NatureOfOrganization"
         :id="`delivery_${index + 1}`"
-        required="required"
+        @change="$emit('onInput', $event.target.value)"
+        required
       />
       <label :for="`delivery_${index + 1}`">
         {{ option }}
@@ -17,7 +19,7 @@
 
 <script>
 export default {
-  props: ["option", "index","required"],
+  props: ["option", "index", "required"],
 };
 </script>
 
