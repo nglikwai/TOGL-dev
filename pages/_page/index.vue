@@ -1,5 +1,5 @@
 <script>
-import Header from "@/src/components/Header";
+import Header from "@/src/components/Common/Header";
 export default {
   components: { Header },
   name: "IndexPage",

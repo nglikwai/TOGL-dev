@@ -6,6 +6,7 @@
         class="radio_class"
         name="delivery_radio"
         :id="`delivery_${index + 1}`"
+        required="required"
       />
       <label :for="`delivery_${index + 1}`">
         {{ option }}
@@ -16,7 +17,7 @@
 
 <script>
 export default {
-  props: ["option", "index"],
+  props: ["option", "index","required"],
 };
 </script>
 
