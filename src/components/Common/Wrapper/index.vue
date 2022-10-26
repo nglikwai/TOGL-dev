@@ -9,7 +9,8 @@ export default {
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="theme-wrapper">
+    <div class="register_bg"></div>
     <Header />
     <slot />
     <Footer />
@@ -17,9 +18,11 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.wrapper {
+.theme-wrapper {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+  height: 100vh;
 }
 </style>

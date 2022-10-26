@@ -7,15 +7,17 @@ import { initXmSelect, getValue } from "@/src/utility/xmSelect";
 import { mapMutations } from "vuex";
 import Wrapper from "@/src/components/Common/Wrapper";
 import * as R from "ramda";
-import {
-  sessionTwoQuestions,
-  natureOfOrganization,
-  sessionOneQuestions,
-  supportingDocument,
-  initDatePicker,
-} from "@/src/data/registration";
+import * as reg from "@/src/constants/registration";
 
 export default {
+  head () {
+    return {
+        title: "Register"
+    }
+},
+
+
+
   components: {
     OptionRadio,
     RegistrationContent,
@@ -25,16 +27,16 @@ export default {
   },
   data() {
     return {
-      sessionOneQuestions,
-      sessionTwoQuestions,
-      natureOfOrganization,
-      supportingDocument,
+      sessionOneQuestions:reg.sessionOneQuestions,
+      sessionTwoQuestions:reg.sessionTwoQuestions,
+      natureOfOrganization:reg.natureOfOrganization,
+      supportingDocument:reg.supportingDocument,
       answer: {
         natureOfOrganization: "",
         agreement: false,
         serviceDistrict: [],
       },
-      tags: ["Document A.pdf", "Document B.pdf"],
+      tags: [],
     };
   },
 
@@ -79,7 +81,7 @@ export default {
     },
   },
   mounted() {
-    initDatePicker("validityPeriod");
+    reg.initDatePicker("validityPeriod");
     initXmSelect("serviceDistrict");
   },
 };
@@ -88,7 +90,6 @@ export default {
 <template>
   <Wrapper>
     <div class="container">
-      <div class="register_bg"></div>
       <div class="register_width">
         <div class="register_title"><b>Create Your Account</b></div>
         <form
@@ -204,6 +205,7 @@ export default {
                       name="Agreement"
                       id="Agreement_1"
                       @input="answer.agreement = true"
+                      required
                     />
                     <label for="Agreement_1">
                       I understand and agree to the

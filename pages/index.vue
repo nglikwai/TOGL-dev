@@ -1,14 +1,14 @@
 <script>
-import Header from "@/src/components/Common/Header";
+import Wrapper from "@/src/components/Common/Wrapper";
+
 export default {
-  components: { Header },
-  name: "IndexPage",
+  components: { Wrapper },
 };
 </script>
 <template>
-  <div class="wrapper">
+  <Wrapper>
     <nuxt-link to="/register">Register</nuxt-link>
-  </div>
+  </Wrapper>
 </template>
 
 <style scoped>
